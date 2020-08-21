@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -20,4 +20,5 @@ def your_url():
         return render_template('your_url.html', slug=slug, url=url)
     else:
         # return render_template('home.html')
-        return redirect('/')    #Redirect to home
+        # return redirect('/')    #Redirect to home
+        return redirect(url_for('home'))
