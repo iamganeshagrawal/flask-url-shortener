@@ -1,21 +1,21 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, abort, session, jsonify
+from flask import render_template, request, redirect, url_for, flash, abort, session, jsonify, Blueprint
 import json
 import os.path
 from os import getcwd
 from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
-app.secret_key = 'h55dasdash3hacas68789cxaj'
+bp = Blueprint('urlshort', __name__)
 
-@app.route('/')
+
+@bp.route('/')
 def home():
     return render_template('home.html', slugs=session.keys())
 
-@app.route('/about')
+@bp.route('/about')
 def about():
     return render_template('about.html')
 
-@app.route("/your-url", methods=['GET', 'POST'])
+@bp.route("/your-url", methods=['GET', 'POST'])
 def your_url():
     if request.method == 'POST':
         # slug = request.args['slug'] # GET 
@@ -31,7 +31,7 @@ def your_url():
         
         if slug in urls.keys():
             flash('The short name has already been taken. Please select another one')
-            return redirect(url_for('home'))
+            return redirect(url_for('urlshort.home'))
 
         if 'url' in request.form.keys():
             url = request.form['url']   #POST
@@ -50,9 +50,9 @@ def your_url():
     else:
         # return render_template('home.html')
         # return redirect('/')    #Redirect to home
-        return redirect(url_for('home'))
+        return redirect(url_for('urlshort.home'))
 
-@app.route('/<string:slug>')
+@bp.route('/<string:slug>')
 def redirect_to_url(slug):
     if os.path.exists('urls.json'):
         with open('urls.json') as urls_file:
@@ -69,11 +69,11 @@ def redirect_to_url(slug):
             #     return redirect(url_for('home'))
     return abort(404)
 
-@app.route('/api')
+@bp.route('/api')
 def session_api():
     return jsonify(list(session.keys()))
 
 # Error 404
-@app.errorhandler(404)
+@bp.errorhandler(404)
 def page_not_found(error):
     return render_template('page_not_found.html'), 404
