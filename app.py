@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, abort
+from flask import Flask, render_template, request, redirect, url_for, flash, abort, session
 import json
 import os.path
 from os import getcwd
@@ -9,7 +9,7 @@ app.secret_key = 'h55dasdash3hacas68789cxaj'
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', slugs=session.keys())
 
 @app.route('/about')
 def about():
@@ -45,6 +45,7 @@ def your_url():
 
         with open('urls.json', 'w') as urls_file:
             json.dump(urls, urls_file)
+            session[slug] = True
 
         return render_template('your_url.html', slug=slug)
     else:

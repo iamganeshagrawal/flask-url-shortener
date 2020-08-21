@@ -47,5 +47,14 @@
       <br />
       <input type="submit" value="Shorten" />
     </form>
+    <br />
+    {% if slugs %}
+    <h2>Your short-urls</h2>
+    <ul>
+      {% for slug in slugs %}
+      <li><a href="/{{slug}}">{{slug}}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
   </body>
 </html>
