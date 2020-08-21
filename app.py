@@ -40,7 +40,7 @@ def your_url():
         else:
             f = request.files['file']
             full_name = slug + '-' + secure_filename(f.filename)
-            f.save(os.path.join('uploads', full_name))
+            f.save(os.path.join('static','uploads', full_name))
             urls[slug] = {'file': full_name}
 
         with open('urls.json', 'w') as urls_file:
@@ -62,6 +62,8 @@ def redirect_to_url(slug):
                 slug_info = urls[slug]
                 if 'url' in slug_info.keys():
                     return redirect(slug_info['url'])
+                else:
+                    return redirect(url_for('static', filename='uploads/' + slug_info['file']))
             else:
                 flash('The short name has not exits.')
                 return redirect(url_for('home'))
