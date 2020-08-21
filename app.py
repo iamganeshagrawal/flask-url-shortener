@@ -51,3 +51,17 @@ def your_url():
         # return render_template('home.html')
         # return redirect('/')    #Redirect to home
         return redirect(url_for('home'))
+
+@app.route('/<string:slug>')
+def redirect_to_url(slug):
+    if os.path.exists('urls.json'):
+        with open('urls.json') as urls_file:
+            urls = json.load(urls_file)
+
+            if slug in urls.keys():
+                slug_info = urls[slug]
+                if 'url' in slug_info.keys():
+                    return redirect(slug_info['url'])
+            else:
+                flash('The short name has not exits.')
+                return redirect(url_for('home'))
