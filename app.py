@@ -13,8 +13,7 @@ def home():
 
 @app.route('/about')
 def about():
-    print(getcwd())
-    return "This is a url shortener"
+    return render_template('about.html')
 
 @app.route("/your-url", methods=['GET', 'POST'])
 def your_url():
