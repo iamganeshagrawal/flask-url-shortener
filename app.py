@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, abort
 import json
 import os.path
 from os import getcwd
@@ -64,6 +64,12 @@ def redirect_to_url(slug):
                     return redirect(slug_info['url'])
                 else:
                     return redirect(url_for('static', filename='uploads/' + slug_info['file']))
-            else:
-                flash('The short name has not exits.')
-                return redirect(url_for('home'))
+            # else:
+            #     flash('The short name has not exits.')
+            #     return redirect(url_for('home'))
+    return abort(404)
+
+# Error 404
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page_not_found.html'), 404
