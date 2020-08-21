@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, abort, session
+from flask import Flask, render_template, request, redirect, url_for, flash, abort, session, jsonify
 import json
 import os.path
 from os import getcwd
@@ -69,6 +69,10 @@ def redirect_to_url(slug):
             #     flash('The short name has not exits.')
             #     return redirect(url_for('home'))
     return abort(404)
+
+@app.route('/api')
+def session_api():
+    return jsonify(list(session.keys()))
 
 # Error 404
 @app.errorhandler(404)
