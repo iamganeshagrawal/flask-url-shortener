@@ -3,10 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>URL Shortener</title>
   </head>
   <body>
-    <h1>Home</h1>
-    <h2>Welcome {{ name }}</h2>
+    <h1>URL Shortener</h1>
+    <form action="your-url" method="POST">
+      <label for="url">Website URL</label>
+      <input type="url" name="url" placeholder="Long URL" required />
+      <br />
+      <label for="slug">Short name</label>
+      <input
+        type="text"
+        name="slug"
+        placeholder="short name or slug"
+        required
+      />
+      <br />
+      <input type="submit" value="Shorten" />
+    </form>
   </body>
 </html>
