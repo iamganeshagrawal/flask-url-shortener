@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import json
 import os.path
+from os import getcwd
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'h55dasdash3hacas68789cxaj'
@@ -11,6 +13,7 @@ def home():
 
 @app.route('/about')
 def about():
+    print(getcwd())
     return "This is a url shortener"
 
 @app.route("/your-url", methods=['GET', 'POST'])
@@ -19,7 +22,6 @@ def your_url():
         # slug = request.args['slug'] # GET 
         # url = request.args['url']   #GET
         slug = request.form['slug'] # POST 
-        url = request.form['url']   #POST
 
         # Storing data into json
         urls = {}
@@ -32,11 +34,19 @@ def your_url():
             flash('The short name has already been taken. Please select another one')
             return redirect(url_for('home'))
 
-        urls[slug] = {'url': url}
+        if 'url' in request.form.keys():
+            url = request.form['url']   #POST
+            urls[slug] = {'url': url}
+        else:
+            f = request.files['file']
+            full_name = slug + '-' + secure_filename(f.filename)
+            f.save(os.path.join('uploads', full_name))
+            urls[slug] = {'file': full_name}
+
         with open('urls.json', 'w') as urls_file:
             json.dump(urls, urls_file)
 
-        return render_template('your_url.html', slug=slug, url=url)
+        return render_template('your_url.html', slug=slug)
     else:
         # return render_template('home.html')
         # return redirect('/')    #Redirect to home
