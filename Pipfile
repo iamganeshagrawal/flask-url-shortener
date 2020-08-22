@@ -8,11 +8,12 @@ pylint = "*"
 
 [packages]
 flask = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.7"
 
 [scripts]
-start = "echo 'start'"
-dev = "echo 'dev'"
-test = "echo 'test'"
+start = "env FLASK_APP='urlshort' flask run"
+dev = "env FLASK_APP='urlshort' FLASK_ENV='development' flask run"
+test = "echo 'This is test script'"
