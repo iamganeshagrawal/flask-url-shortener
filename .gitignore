@@ -1,4 +1,5 @@
 .vscode
-uploads/*
-static/uploads/*
+.pytest_cache
+
 urlshort/static/uploads/*
+
